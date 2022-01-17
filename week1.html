@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第一週</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        .products {
+            width: 100%;
+            justify-content: center;
+            margin: auto;
+        }
+        
+        .products_list,
+        .products_details {
+            width: 100%;
+        }
+        
+        @media screen and (min-width:1200px) {
+            /* For desktop: */
+            .products {
+                width: 1200px;
+                display: flex;
+            }
+            .products_list,
+            .products_details {
+                width: 50%;
+            }
+        }
+        
+        .products_list_table {
+            width: 90%;
+            text-align: center;
+            border-collapse: collapse;
+        }
+        
+        .products_list_table th {
+            padding: 10px;
+            border-bottom: 3px solid #aaa;
+        }
+        
+        .products_list_table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .products_list_table tr:nth-child(even) {
+            background-color: #eee;
+        }
+        
+        .products_list_table .enabled {
+            color: green;
+        }
+        
+        .products_list_table .not_enabled {
+            color: red;
+        }
+        
+        .products_list_table .enabled:hover,
+        .products_list_table .not_enabled:hover {
+            border-bottom: 3px solid #4682b4;
+        }
+        
+        .products_list_table tbody tr:hover {
+            background-color: #ffffe0;
+        }
+        
+        .products_list_table .btn,
+        .products_list_table .enabled,
+        .products_list_table .not_enabled {
+            cursor: pointer;
+        }
+        
+        .products_list_table .btn {
+            background-color: #20b2aa;
+            border: none;
+            padding: 10px;
+            border-radius: 20px;
+            color: #fff;
+        }
+        
+        .products_list_table .btn:hover {
+            background-color: #4682b4;
+        }
+        
+        .detail_content {
+            border: 1px solid #ccc;
+            padding: 0 20px 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .detail_content h3 {
+            display: inline;
+            margin-right: 10px;
+        }
+        
+        .detail_content .tag {
+            display: inline;
+            background-color: rgb(71, 166, 255);
+            color: #fff;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        
+        .detail_content .origin_price {
+            text-decoration: line-through;
+        }
+        
+        .detail_content .pic {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .detail_content .pic img {
+            width: 200px;
+            vertical-align: bottom;
+        }
+        
+        .more_imgs {
+            display: flex;
+        }
+        
+        .more_imgs .pic {
+            height: 150px;
+            margin-right: 20px;
+        }
+        
+        .more_imgs img {
+            height: 100%;
+            vertical-align: bottom;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="products" id="app">
+        <div class="products_list">
+            <h2>產品列表</h2>
+            <table class="products_list_table">
+                <thead>
+                    <tr>
+                        <th>產品名稱</th>
+                        <th>原價</th>
+                        <th>售價</th>
+                        <th>是否啟用</th>
+                        <th>查看細節</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(product,id) in products" :key="id">
+                        <td>{{product.title}}</td>
+                        <td>{{product.origin_price}}</td>
+                        <td>{{product.price}}</td>
+                        <td><span v-if="product.is_enabled===1" class="enabled" v-on:click="product.is_enabled=0">啟用</span>
+                            <span v-else class="not_enabled" v-on:click="product.is_enabled=1">未啟用</span>
+                        </td>
+                        <td><button type="button" class="btn" v-on:click="productsDetail = product">查看細節</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>目前有 {{products.length}} 項產品</p>
+        </div>
+        <div class="products_details">
+            <h2>單一產品細節</h2>
+            <div class="detail" v-if="productsDetail.title">
+                <div class="detail_content">
+                    <div class="pic">
+                        <img :src="productsDetail.imageUrl" alt="">
+                    </div>
+                    <div class="text">
+                        <h3>{{productsDetail.title}}</h3>
+                        <p class="tag">{{productsDetail.category}}</p>
+                        <p>商品描述:{{productsDetail.description}}</p>
+                        <p>商品內容:{{productsDetail.content}}</p>
+                        <p> <span class="origin_price">原價:{{productsDetail.origin_price}}</span> 特價:{{productsDetail.price}}元/{{productsDetail.unit}}</p>
+                    </div>
+                </div>
+                <div class="more_imgs">
+                    <div class="pic" v-for="img in productsDetail.imagesUrl">
+                        <img :src="img" alt="">
+                    </div>
+                </div>
+
+            </div>
+            <p v-else>請選擇一個商品查看</p>
+
+        </div>
+    </section>
+
+
+    <script>
+        //Vue載入方式:
+        //1.CDN
+        //2.ESM
+        // import {
+        //     createApp
+        // } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.26/vue.esm-browser.min.js';
+
+
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    productsDetail: {},
+                    // 產品資料格式
+                    products: [{
+                        category: "飲料",
+                        content: "容量:750ml",
+                        description: "使用上等的茶葉沖泡，茶底十分濃厚順滑，奶味也相當濃厚，兩者完美的結合，一杯黃金比例的珍珠奶茶就此誕生！",
+                        id: "1bCwn",
+                        is_enabled: 1,
+                        origin_price: 120,
+                        price: 79,
+                        title: "珍珠奶茶",
+                        unit: "杯",
+                        num: 10,
+                        imageUrl: "https://images.unsplash.com/photo-1558857563-b371033873b8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+                        imagesUrl: [
+                            "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80",
+                            "https://images.unsplash.com/photo-1577278978752-5c2587aed11b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=411&q=80"
+                        ]
+                    }, {
+                        category: "蛋糕",
+                        content: "尺寸:6寸",
+                        description: "國外進口新鮮乳酪製成慕斯，風味可口清爽，底層採用歐洲進口小麥胚芽餅製作，香味誘人，並以進口Barry Callebaut高脂可可粉鋪灑而成，若酌以一杯濃郁咖啡，閒散於午后將是絕配。",
+                        id: "Nebz2",
+                        is_enabled: 1,
+                        origin_price: 1200,
+                        price: 800,
+                        title: "提拉米蘇",
+                        unit: "個",
+                        num: 20,
+                        imageUrl: "https://images.unsplash.com/photo-1568627175730-73d05bd69ca9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=388&q=80",
+                        imagesUrl: [
+                            "https://images.unsplash.com/photo-1586040456399-50595fb77ecd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1174&q=80",
+                            "https://images.unsplash.com/photo-1567608286687-394db5f7520a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=388&q=80",
+                        ]
+                    }, {
+                        category: "飲料",
+                        content: "容量:25ml",
+                        description: "使用義式咖啡機沖泡，藉由高壓水沖煮研磨細緻且緊壓的咖啡粉，比其他方法製作出來的咖啡更加濃郁。",
+                        id: "TSfUq",
+                        is_enabled: 0,
+                        origin_price: 60,
+                        price: 35,
+                        title: "義式濃縮咖啡",
+                        unit: "杯",
+                        num: 15,
+                        imageUrl: "https://wowlavie-aws.hmgcdn.com/file/article_all/A1560997636.jpg",
+                        imagesUrl: [
+                            "https://images.unsplash.com/photo-1494314671902-399b18174975?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
+                        ]
+                    }, {
+                        category: "飲料",
+                        content: "容量:180ml",
+                        description: "首先倒入濃縮咖啡，熱牛奶，最後鋪上一層厚重的奶泡，再灑上肉桂粉、可可粉或是柑橘及檸檬果皮增添風味。",
+                        id: "lZMr8",
+                        is_enabled: 1,
+                        origin_price: 180,
+                        price: 150,
+                        title: "卡布奇諾",
+                        unit: "杯",
+                        num: 8,
+                        imageUrl: "https://wowlavie-aws.hmgcdn.com/file/article_all/A1560997801.jpg",
+                        imagesUrl: [
+                            "https://images.unsplash.com/photo-1541167760496-1628856ab772?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1337&q=80"
+                        ]
+                    }, {
+                        category: "甜點",
+                        content: "尺寸:每顆直徑約5.5cm",
+                        description: "吃起來酸甜清香，內餡非常滑順，品嚐起來有很明顯的檸檬精油香氣，算是屬於清爽口味的檸檬塔!",
+                        id: "wyV0w",
+                        is_enabled: 1,
+                        origin_price: 70,
+                        price: 50,
+                        title: "檸檬塔",
+                        unit: "個",
+                        num: 3,
+                        imageUrl: "https://images.unsplash.com/photo-1543508834-51a9bcc28a88?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+                        imagesUrl: [
+                            "https://kellylife.tw/wp-content/uploads/20210329132132_66.jpg"
+                        ]
+                    }]
+                }
+            }
+        });
+        app.mount('#app');
+    </script>
+</body>
+
+</html>
