@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第二週</title>
+    <link rel="stylesheet" href="./css/products.css">
+
+</head>
+
+<body>
+    <section class="products" id="app">
+        <div class="products_list">
+            <h2>產品列表</h2>
+            <table class="products_list_table">
+                <thead>
+                    <tr>
+                        <th>產品名稱</th>
+                        <th>原價</th>
+                        <th>售價</th>
+                        <th>是否啟用</th>
+                        <th>查看細節</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(product) in products" :key="id">
+                        <td>{{product.title}}</td>
+                        <td>{{product.origin_price}}</td>
+                        <td>{{product.price}}</td>
+                        <td><span v-if="product.is_enabled===1" class="enabled" v-on:click="product.is_enabled=0">啟用</span>
+                            <span v-else class="not_enabled" v-on:click="product.is_enabled=1">未啟用</span>
+                        </td>
+                        <td><button type="button" class="btn" @click="openProduct(product)">查看細節</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>目前有 {{products.length}} 項產品</p>
+        </div>
+        <div class="products_details">
+            <h2>單一產品細節</h2>
+            <div class="detail" v-if="productsDetail.title">
+                <div class="detail_content">
+                    <div class="pic">
+                        <img :src="productsDetail.imageUrl" alt="">
+                    </div>
+                    <div class="text">
+                        <h3>{{productsDetail.title}}</h3>
+                        <p class="tag">{{productsDetail.category}}</p>
+                        <p>商品描述:{{productsDetail.description}}</p>
+                        <p>商品內容:{{productsDetail.content}}</p>
+                        <p> <span class="origin_price">原價:{{productsDetail.origin_price}}</span> 特價:{{productsDetail.price}}元/{{productsDetail.unit}}</p>
+                    </div>
+                </div>
+                <div class="more_imgs">
+                    <div class="pic" v-for="img in productsDetail.imagesUrl" :key="id">
+                        <img :src="img" alt="">
+                    </div>
+                </div>
+
+            </div>
+            <p v-else>請選擇一個商品查看</p>
+
+        </div>
+    </section>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.9.1/axios.min.js' integrity='sha512-Xk3wWei2TGrsh9kDSBKUMIjw/86sLUvhtnv9f7fOuIwhhiUTKz8szkWkzHthrM5Bb3Bu9idSzkxOrkzhcneuiw==' crossorigin='anonymous'></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
+    <script src="./js/products.js" type="module"></script>
+
+</body>
+
+</html>

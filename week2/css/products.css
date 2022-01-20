@@ -1,0 +1,125 @@
+.products {
+    width: 100%;
+    justify-content: center;
+    margin: auto;
+}
+
+.products_list,
+.products_details {
+    width: 100%;
+}
+
+@media screen and (min-width:1200px) {
+    /* For desktop: */
+    .products {
+        width: 1200px;
+        display: flex;
+    }
+    .products_list,
+    .products_details {
+        width: 50%;
+    }
+}
+
+.products_list_table {
+    width: 90%;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+.products_list_table th {
+    padding: 10px;
+    border-bottom: 3px solid #aaa;
+}
+
+.products_list_table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.products_list_table tr:nth-child(even) {
+    background-color: #eee;
+}
+
+.products_list_table .enabled {
+    color: green;
+}
+
+.products_list_table .not_enabled {
+    color: red;
+}
+
+.products_list_table .enabled:hover,
+.products_list_table .not_enabled:hover {
+    border-bottom: 3px solid #4682b4;
+}
+
+.products_list_table tbody tr:hover {
+    background-color: #ffffe0;
+}
+
+.products_list_table .btn,
+.products_list_table .enabled,
+.products_list_table .not_enabled {
+    cursor: pointer;
+}
+
+.products_list_table .btn {
+    background-color: #20b2aa;
+    border: none;
+    padding: 10px;
+    border-radius: 20px;
+    color: #fff;
+}
+
+.products_list_table .btn:hover {
+    background-color: #4682b4;
+}
+
+.detail_content {
+    border: 1px solid #ccc;
+    padding: 0 20px 10px 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.detail_content h3 {
+    display: inline;
+    margin-right: 10px;
+}
+
+.detail_content .tag {
+    display: inline;
+    background-color: rgb(71, 166, 255);
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.detail_content .origin_price {
+    text-decoration: line-through;
+}
+
+.detail_content .pic {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.detail_content .pic img {
+    width: 200px;
+    vertical-align: bottom;
+}
+
+.more_imgs {
+    display: flex;
+}
+
+.more_imgs .pic {
+    height: 150px;
+    margin-right: 20px;
+}
+
+.more_imgs img {
+    height: 100%;
+    vertical-align: bottom;
+}
