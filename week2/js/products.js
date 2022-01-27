@@ -23,7 +23,7 @@ createApp({
                 })
                 .catch((error) => {
                     console.dir(error);
-                    window.location = 'index.html';
+                    window.location = 'login.html';
                 })
         },
         //從遠端api取得資料
