@@ -99,6 +99,8 @@
                                         </div>
                                         <img class="img-fluid" :src="image">
                                     </div>
+                                    <!--!temporaryProducts.imagesUrl.length  如果刪到陣列沒有長度>>空的連一格都沒有，不再顯示"刪除圖片"，只顯示"新增圖片"-->
+                                    <!--temporaryProducts.imagesUrl[temporaryProducts.imagesUrl.length - 1]  如果陣列最後一項是有內容的，在後面顯示"新增圖片"(會再新增一個空陣列格子)-->
                                     <div v-if="!temporaryProducts.imagesUrl.length || temporaryProducts.imagesUrl[temporaryProducts.imagesUrl.length - 1]">
 
                                         <button class="btn btn-outline-primary btn-sm d-block w-100" @click="temporaryProducts.imagesUrl.push('')">
