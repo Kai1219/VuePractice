@@ -220,12 +220,15 @@ const app = createApp({
     components: { modal, delmodal, pagination },
     methods: {
         checkLogin() {
+            var mytoken = document.cookie.replace(/(?:(?:^|.*;\s*)KateCookieName\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+            axios.defaults.headers.common['Authorization'] = mytoken;
+
             axios.post(`${apiUrl}/api/user/check`)
                 .then((res) => {
                     this.getData();
                 })
                 .catch((error) => {
-                    alert(error.message);
+                    alert(error.data.message);
                     window.location = 'login.html';
                 })
         },
@@ -260,9 +263,6 @@ const app = createApp({
         },
     },
     mounted() {
-        var mytoken = document.cookie.replace(/(?:(?:^|.*;\s*)KateCookieName\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-        axios.defaults.headers.common['Authorization'] = mytoken;
-
         this.checkLogin();
         //bootstrap實體化，產生新的變數並儲存在productModal
         productModal = new bootstrap.Modal(document.querySelector('#productModal'))

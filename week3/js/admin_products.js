@@ -22,12 +22,16 @@ const app = createApp({
     methods: {
         //確認登入與否
         checkLogin() {
+            //從cookie取得Token
+            var mytoken = document.cookie.replace(/(?:(?:^|.*;\s*)KateCookieName\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+            //每次發送axios請求的時候，會自動帶上headers來驗證身分，夾帶內容是Token
+            axios.defaults.headers.common['Authorization'] = mytoken;
             axios.post(`${apiUrl}/api/user/check`)
                 .then((res) => {
                     this.getData();
                 })
                 .catch((error) => {
-                    alert(error.message);
+                    alert(error.data.message);
                     window.location = 'login.html';
                 })
         },
@@ -126,11 +130,6 @@ const app = createApp({
     },
 
     mounted() {
-        //從cookie取得Token
-        var mytoken = document.cookie.replace(/(?:(?:^|.*;\s*)KateCookieName\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-        //每次發送axios請求的時候，會自動帶上headers來驗證身分，夾帶內容是Token
-        axios.defaults.headers.common['Authorization'] = mytoken;
-
         this.checkLogin();
 
         //bootstrap實體化，產生新的變數並儲存在productModal
