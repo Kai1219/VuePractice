@@ -1,6 +1,3 @@
-//import { createApp } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.28/vue.esm-browser.min.js';
-
-
 const apiUrl = 'https://vue3-course-api.hexschool.io/v2';
 const apiPath = 'kate-hexschool';
 /*載入表單規則*/
@@ -17,6 +14,9 @@ VeeValidate.configure({
     validateOnInput: true, // 調整為輸入字元立即進行驗證
 });
 
+import VueLoading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+
 const app = Vue.createApp({
     data() {
         return {
@@ -25,6 +25,7 @@ const app = Vue.createApp({
             productId: '',
             //讀取效果
             isLoadingItem: '',
+            isLoadingAll: false,
             orderform: {
                 user: {
                     name: '',
@@ -130,6 +131,12 @@ const app = Vue.createApp({
                     })
             }
         },
+        addLoading() {
+            this.isLoadingAll = true;
+            setTimeout(() => {
+                this.isLoadingAll = false
+            }, 1000)
+        },
     },
     mounted() {
         this.getProducts();
@@ -184,5 +191,5 @@ app.component('VForm', VeeValidate.Form);
 app.component('VField', VeeValidate.Field);
 app.component('ErrorMessage', VeeValidate.ErrorMessage);
 
-
+app.component('Loading', VueLoading.Component);
 app.mount('#app');
