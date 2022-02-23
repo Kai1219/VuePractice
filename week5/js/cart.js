@@ -14,9 +14,6 @@ VeeValidate.configure({
     validateOnInput: true, // 調整為輸入字元立即進行驗證
 });
 
-import VueLoading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
-
 const app = Vue.createApp({
     data() {
         return {
@@ -121,7 +118,7 @@ const app = Vue.createApp({
                 axios.post(`${apiUrl}/api/${apiPath}/order`, { data })
                     .then((res) => {
                         alert(res.data.message);
-                        //this.deleteCartAll();
+                        this.addLoading();
                         this.getCart();
                         this.$refs.form.resetForm();
                     })
